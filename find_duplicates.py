@@ -17,7 +17,12 @@ def list_files(path: str) -> list[str]:
         list[str]: A list of file paths found in the directory and its subdirectories.
     """
     # Run "pytest find_duplicates.py -k list_files" to test your implementation
-    raise NotImplementedError()
+    files = []
+    for root, _, filenames in os.walk(path):
+        for name in filenames:
+            files.append(os.path.join(root, name))
+    return files
+
 
 
 def get_file_size(file_path: str) -> int:
