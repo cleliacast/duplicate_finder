@@ -49,7 +49,10 @@ def hash_first_1k_bytes(file_path: str) -> str:
         str: The hexadecimal SHA-1 hash of the first 1024 bytes of the file.
     """
     # Run "pytest find_duplicates.py -k hash_first_1k_bytes" to test your implementation
-    raise NotImplementedError()
+    sha1 = hashlib.sha1()
+    with open(file_path, "rb") as f:
+        sha1.update(f.read(1024))
+    return sha1.hexdigest()
 
 
 def hash_file(file_path: str) -> str:
@@ -63,7 +66,11 @@ def hash_file(file_path: str) -> str:
         str: The hexadecimal SHA-1 hash of the file.
     """
     # Run "pytest find_duplicates.py -k hash_file" to test your implementation
-    raise NotImplementedError()
+    sha1 = hashlib.sha1()
+    with open(file_path, "rb") as f:
+        while chunk := f.read(8192):
+            sha1.update(chunk)
+    return sha1.hexdigest()
 
 
 def filter_files_by_size(file_paths: list[str]) -> list[str]:
@@ -156,7 +163,12 @@ def file_size_string(num_bytes: int) -> str:
     """
     sizes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
     # Run "pytest find_duplicates.py -k file_size_string" to test your implementation
-    raise NotImplementedError()
+    size = float(num_bytes)
+    idx = 0
+    while size >= 1000 and idx < len(sizes) - 1:
+        size /= 1000
+        idx += 1
+    return f"{size:.2f}{sizes[idx]}"
 
 
 def print_duplicates(duplicates: list[list[str]]):
